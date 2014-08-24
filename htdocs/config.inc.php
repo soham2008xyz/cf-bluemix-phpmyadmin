@@ -25,7 +25,7 @@ $i = 0;
  * Read MySQL service properties from _ENV['VCAP_SERVICES']
  */
 $services = json_decode($_ENV['VCAP_SERVICES'], true);
-$service = $services['cleardb'][0]; // pick the first service
+$service = $services['mysql-5.5'][0]; // pick the first service
 
 /*
  * First server
