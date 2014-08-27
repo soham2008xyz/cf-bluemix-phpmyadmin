@@ -4,7 +4,7 @@ applications:
   name: phpmyadmin-soham
   host: phpmyadminsoham
   disk: 256M                                                                                                         
-  domain: ng.bluemix.net
+  domain: mybluemix.net
   mem: 256M
   instances: 1
   services:
