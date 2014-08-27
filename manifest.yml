@@ -2,7 +2,7 @@ applications:
 - buildpack: https://github.com/dmikusa-pivotal/cf-php-build-pack.git
   # Replace name and host with your own values
   name: phpmyadmin-soham
-  host: phpmyadmin-soham
+  host: phpmyadminsoham
   disk: 256M                                                                                                         
   domain: ng.bluemix.net
   mem: 256M
