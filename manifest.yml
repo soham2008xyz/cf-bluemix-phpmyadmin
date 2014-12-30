@@ -1,11 +1,11 @@
 applications:
 - buildpack: https://github.com/dmikusa-pivotal/cf-php-build-pack.git
   # Replace name, service name and host with your own values
-  name: your-app-name
-  host: your-app-route
-  disk: 256M                                                                                                         
+  name: phpmyadmin-khavar
+  host: phpmyadmin-khavar
+  disk: 128M                                                                                                         
   domain: mybluemix.net
-  mem: 256M
+  mem: 128M
   instances: 1
   services:
-  - your-db-service-name
+  - khavar-db
