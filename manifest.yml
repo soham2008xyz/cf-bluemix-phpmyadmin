@@ -3,9 +3,8 @@ applications:
   # Replace name, service name and host with your own values
   name: phpmyadmin-khavar
   host: phpmyadmin-khavar
-  disk: 128M                                                                                                         
   domain: mybluemix.net
-  mem: 128M
+  memory: 256M
   instances: 1
   services:
   - khavar-db
