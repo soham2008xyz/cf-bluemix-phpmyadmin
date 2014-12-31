@@ -40,6 +40,14 @@ foreach($service_blob as $service_provider => $service_list) {
 /*
  * Servers configuration
  */
+$controldb = $mysql_services[0]['credentials'];
+
+/* User used to manipulate with storage */
+$cfg['Servers'][$i]['controlhost'] = $controldb['hostname'];
+$cfg['Servers'][$i]['controlport'] = $controldb['port'];
+$cfg['Servers'][$i]['controluser'] = $controldb['username'];
+$cfg['Servers'][$i]['controlpass'] = $controldb['password'];
+
 for ($i = 1; $i <= count($mysql_services); $i++) {
     $db = $mysql_services[$i-1]['credentials'];
     /* Display name */
@@ -54,14 +62,8 @@ for ($i = 1; $i <= count($mysql_services); $i++) {
     $cfg['Servers'][$i]['extension'] = 'mysqli';
     $cfg['Servers'][$i]['AllowNoPassword'] = false;
     
-    /* User used to manipulate with storage */
-    $cfg['Servers'][$i]['controlhost'] = $db['hostname'];
-    $cfg['Servers'][$i]['controlport'] = $db['port'];
-    $cfg['Servers'][$i]['controluser'] = $db['username'];
-    $cfg['Servers'][$i]['controlpass'] = $db['password'];
-    
     /* Storage database and tables */
-    //$cfg['Servers'][$i]['pmadb'] = $db['name'] || $db['db'];
+    $cfg['Servers'][$i]['pmadb'] = $controldb['name'];
     $cfg['Servers'][$i]['bookmarktable'] = 'pma__bookmark';
     $cfg['Servers'][$i]['relation'] = 'pma__relation';
     $cfg['Servers'][$i]['table_info'] = 'pma__table_info';
@@ -86,8 +88,8 @@ for ($i = 1; $i <= count($mysql_services); $i++) {
 /*
  * phpMyAdmin configuration storage settings.
  */
- $cfg['Servers'][1]['pmadb'] = $mysql_services[0]['credentials']['name'];
- $cfg['Servers'][2]['pmadb'] = $mysql_services[1]['credentials']['db'];
+ //$cfg['Servers'][1]['pmadb'] = $mysql_services[0]['credentials']['name'];
+ //$cfg['Servers'][2]['pmadb'] = $mysql_services[1]['credentials']['db'];
 
 /*
  * Read application configuration, get uri
