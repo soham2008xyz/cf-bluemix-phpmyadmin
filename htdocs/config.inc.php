@@ -42,12 +42,6 @@ foreach($service_blob as $service_provider => $service_list) {
  */
 $controldb = $mysql_services[0]['credentials'];
 
-/* User used to manipulate with storage */
-$cfg['Servers'][$i]['controlhost'] = $controldb['hostname'];
-$cfg['Servers'][$i]['controlport'] = $controldb['port'];
-$cfg['Servers'][$i]['controluser'] = $controldb['username'];
-$cfg['Servers'][$i]['controlpass'] = $controldb['password'];
-
 for ($i = 1; $i <= count($mysql_services); $i++) {
     $db = $mysql_services[$i-1]['credentials'];
     /* Display name */
@@ -61,6 +55,12 @@ for ($i = 1; $i <= count($mysql_services); $i++) {
     $cfg['Servers'][$i]['compress'] = false;
     $cfg['Servers'][$i]['extension'] = 'mysqli';
     $cfg['Servers'][$i]['AllowNoPassword'] = false;
+    
+    /* User used to manipulate with storage */
+    $cfg['Servers'][$i]['controlhost'] = $controldb['hostname'];
+    $cfg['Servers'][$i]['controlport'] = $controldb['port'];
+    $cfg['Servers'][$i]['controluser'] = $controldb['username'];
+    $cfg['Servers'][$i]['controlpass'] = $controldb['password'];
     
     /* Storage database and tables */
     $cfg['Servers'][$i]['pmadb'] = $controldb['name'];
