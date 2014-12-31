@@ -87,7 +87,7 @@ for ($i = 1; $i <= count($mysql_services); $i++) {
  * phpMyAdmin configuration storage settings.
  */
  $cfg['Servers'][1]['pmadb'] = $mysql_services[0]['credentials']['name'];
- $cfg['Servers'][2]['pmadb'] = $mysql_services[0]['credentials']['db'];
+ $cfg['Servers'][2]['pmadb'] = $mysql_services[1]['credentials']['db'];
 
 /*
  * Read application configuration, get uri
