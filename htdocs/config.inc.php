@@ -24,8 +24,6 @@ $i = 0;
 /*
  * Read MySQL service properties from _ENV['VCAP_SERVICES']
  */
-//$services = json_decode($_ENV['VCAP_SERVICES'], true);
-//$service = $services['cleardb'][0]; // pick the first service
 
 $service_blob = json_decode($_ENV['VCAP_SERVICES'], true);
 $mysql_services = array();
