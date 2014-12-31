@@ -91,7 +91,8 @@ for ($i = 1; $i <= count($mysql_services); $i++) {
  * Read application configuration, get uri
  */
 $appCfg = json_decode($_ENV['VCAP_APPLICATION'], true);
-$scheme = ($_SERVER['HTTPS'] != '') ? 'https' : 'http';
+//$scheme = ($_SERVER['HTTPS'] != '') ? 'https' : 'http';
+$scheme = 'https';
 $cfg['PmaAbsoluteUri'] = $scheme . '://' . $appCfg['uris'][0] . "/";
 
 $cfg['LoginCookieValidity'] = 1440;
