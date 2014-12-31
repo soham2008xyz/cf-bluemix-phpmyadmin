@@ -1,6 +1,5 @@
 applications:
 - buildpack: https://github.com/dmikusa-pivotal/cf-php-build-pack.git
-  # Replace name, service name and host with your own values
   name: phpmyadmin-khavar
   host: phpmyadmin
   domain: khavar.in
