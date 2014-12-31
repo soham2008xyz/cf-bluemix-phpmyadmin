@@ -12,7 +12,7 @@ _log = logging.getLogger('phpmyadmin')
 
 
 DEFAULTS = utils.FormattedDict({
-    'PHPMYADMIN_VERSION': '4.2.7.1',
+    'PHPMYADMIN_VERSION': '4.3.4',
     'PHPMYADMIN_PACKAGE': 'phpMyAdmin-{PHPMYADMIN_VERSION}-english.tar.gz',
     'PHPMYADMIN_HASH': 'c0e7f38b6bf78f70755a6f503e24053acee819cf',
     'PHPMYADMIN_URL': 'http://sourceforge.net/projects/phpmyadmin/'
