@@ -61,7 +61,7 @@ for ($i = 1; $i <= count($mysql_services); $i++) {
     $cfg['Servers'][$i]['controlpass'] = $db['password'];
     
     /* Storage database and tables */
-    $cfg['Servers'][$i]['pmadb'] = $db['name'] || $db['db'];
+    //$cfg['Servers'][$i]['pmadb'] = $db['name'] || $db['db'];
     $cfg['Servers'][$i]['bookmarktable'] = 'pma__bookmark';
     $cfg['Servers'][$i]['relation'] = 'pma__relation';
     $cfg['Servers'][$i]['table_info'] = 'pma__table_info';
@@ -86,6 +86,8 @@ for ($i = 1; $i <= count($mysql_services); $i++) {
 /*
  * phpMyAdmin configuration storage settings.
  */
+ $cfg['Servers'][1]['pmadb'] = $mysql_services[0]['credentials']['name'];
+ $cfg['Servers'][2]['pmadb'] = $mysql_services[0]['credentials']['db'];
 
 /*
  * Read application configuration, get uri
