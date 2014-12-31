@@ -24,23 +24,66 @@ $i = 0;
 /*
  * Read MySQL service properties from _ENV['VCAP_SERVICES']
  */
-$services = json_decode($_ENV['VCAP_SERVICES'], true);
-$service = $services['cleardb'][0]; // pick the first service
+//$services = json_decode($_ENV['VCAP_SERVICES'], true);
+//$service = $services['cleardb'][0]; // pick the first service
+
+$service_blob = json_decode($_ENV['VCAP_SERVICES'], true);
+$mysql_services = array();
+foreach($service_blob as $service_provider => $service_list) {
+    // looks for 'cleardb' or 'sqldb' service
+    if ($service_provider === 'cleardb' || $service_provider === 'sqldb') {
+        foreach($service_list as $mysql_service) {
+            $mysql_services[] = $mysql_service;
+        }
+        continue;
+    }
+}
 
 /*
- * First server
+ * Servers configuration
  */
-$i++;
-/* Authentication type */
-$cfg['Servers'][$i]['auth_type'] = 'cookie';
-/* Server parameters */
-$cfg['Servers'][$i]['host'] = $service['credentials']['hostname'];
-$cfg['Servers'][$i]['port'] = $service['credentials']['port'];
-$cfg['Servers'][$i]['connect_type'] = 'tcp';
-$cfg['Servers'][$i]['compress'] = false;
-/* Select mysql if your server does not have mysqli */
-$cfg['Servers'][$i]['extension'] = 'mysqli';
-$cfg['Servers'][$i]['AllowNoPassword'] = false;
+for ($i = 1; $i <= count($mysql_services); $i++) {
+    $db = $mysql_services[$i-1]['credentials'];
+    /* Display name */
+    $cfg['Servers'][$i]['verbose'] = $mysql_services[$i-1]['name'];
+    /* Authentication type */
+    $cfg['Servers'][$i]['auth_type'] = 'cookie';
+    /* Server parameters */
+    $cfg['Servers'][$i]['host'] = $db['hostname'];
+    $cfg['Servers'][$i]['port'] = $db['port'];
+    $cfg['Servers'][$i]['connect_type'] = 'tcp';
+    $cfg['Servers'][$i]['compress'] = false;
+    $cfg['Servers'][$i]['extension'] = 'mysqli';
+    $cfg['Servers'][$i]['AllowNoPassword'] = false;
+    
+    /* User used to manipulate with storage */
+    $cfg['Servers'][$i]['controlhost'] = $db['hostname'];
+    $cfg['Servers'][$i]['controlport'] = $db['port'];
+    $cfg['Servers'][$i]['controluser'] = $db['username'];
+    $cfg['Servers'][$i]['controlpass'] = $db['password'];
+    
+    /* Storage database and tables */
+    $cfg['Servers'][$i]['pmadb'] = $db['name'];
+    $cfg['Servers'][$i]['bookmarktable'] = 'pma__bookmark';
+    $cfg['Servers'][$i]['relation'] = 'pma__relation';
+    $cfg['Servers'][$i]['table_info'] = 'pma__table_info';
+    $cfg['Servers'][$i]['table_coords'] = 'pma__table_coords';
+    $cfg['Servers'][$i]['pdf_pages'] = 'pma__pdf_pages';
+    $cfg['Servers'][$i]['column_info'] = 'pma__column_info';
+    $cfg['Servers'][$i]['history'] = 'pma__history';
+    $cfg['Servers'][$i]['table_uiprefs'] = 'pma__table_uiprefs';
+    $cfg['Servers'][$i]['tracking'] = 'pma__tracking';
+    $cfg['Servers'][$i]['designer_coords'] = 'pma__designer_coords';
+    $cfg['Servers'][$i]['userconfig'] = 'pma__userconfig';
+    $cfg['Servers'][$i]['recent'] = 'pma__recent';
+    $cfg['Servers'][$i]['users'] = 'pma__users';
+    $cfg['Servers'][$i]['usergroups'] = 'pma__usergroups';
+    $cfg['Servers'][$i]['navigationhiding'] = 'pma__navigationhiding';
+    $cfg['Servers'][$i]['savedsearches'] = 'pma__savedsearches';
+    $cfg['Servers'][$i]['central_columns'] = 'pma__central_columns';
+    /* Contrib / Swekey authentication */
+    // $cfg['Servers'][$i]['auth_swekey_config'] = '/etc/swekey-pma.conf';
+}
 
 /*
  * phpMyAdmin configuration storage settings.
@@ -54,34 +97,6 @@ $scheme = ($_SERVER['HTTPS'] != '') ? 'https' : 'http';
 $cfg['PmaAbsoluteUri'] = $scheme . '://' . $appCfg['uris'][0] . "/";
 
 $cfg['LoginCookieValidity'] = 1440;
-
-/* User used to manipulate with storage */
-$cfg['Servers'][$i]['controlhost'] = $service['credentials']['hostname'];
-$cfg['Servers'][$i]['controlport'] = $service['credentials']['port'];
-$cfg['Servers'][$i]['controluser'] = $service['credentials']['username'];
-$cfg['Servers'][$i]['controlpass'] = $service['credentials']['password'];
-
-/* Storage database and tables */
-$cfg['Servers'][$i]['pmadb'] = $service['credentials']['name'];
-$cfg['Servers'][$i]['bookmarktable'] = 'pma__bookmark';
-$cfg['Servers'][$i]['relation'] = 'pma__relation';
-$cfg['Servers'][$i]['table_info'] = 'pma__table_info';
-$cfg['Servers'][$i]['table_coords'] = 'pma__table_coords';
-$cfg['Servers'][$i]['pdf_pages'] = 'pma__pdf_pages';
-$cfg['Servers'][$i]['column_info'] = 'pma__column_info';
-$cfg['Servers'][$i]['history'] = 'pma__history';
-$cfg['Servers'][$i]['table_uiprefs'] = 'pma__table_uiprefs';
-$cfg['Servers'][$i]['tracking'] = 'pma__tracking';
-$cfg['Servers'][$i]['designer_coords'] = 'pma__designer_coords';
-$cfg['Servers'][$i]['userconfig'] = 'pma__userconfig';
-$cfg['Servers'][$i]['recent'] = 'pma__recent';
-$cfg['Servers'][$i]['users'] = 'pma__users';
-$cfg['Servers'][$i]['usergroups'] = 'pma__usergroups';
-$cfg['Servers'][$i]['navigationhiding'] = 'pma__navigationhiding';
-$cfg['Servers'][$i]['savedsearches'] = 'pma__savedsearches';
-$cfg['Servers'][$i]['central_columns'] = 'pma__central_columns';
-/* Contrib / Swekey authentication */
-// $cfg['Servers'][$i]['auth_swekey_config'] = '/etc/swekey-pma.conf';
 
 /*
  * End of servers configuration
